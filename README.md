@@ -54,6 +54,7 @@ Below is a list of all the environment variables used by the bot, along with a d
 - `TGPT_TOP_P`: Influences the range of token probabilities considered for generating each token in a response.
 - `TGPT_PRESENCE_PENALTY`: Adjusts the model to prefer tokens from the input, which can encourage the model to talk about new topics.
 - `TGPT_FREQUENCY_PENALTY`: Adjusts the model to avoid using tokens from the input, which can discourage the model from repeating itself.
+- `TGPT_PROMPT`: Bot's default prompt.
 
 ### Setting Up the `.env` File
 

@@ -75,6 +75,11 @@ func (s *Session) SetPrompt(ctx context.Context, prompt string) error {
 		return err
 	}
 
+	// Don't need to update the same prompt.
+	if s.cache.History.Prompt == prompt {
+		return nil
+	}
+
 	s.cache.History.Prompt = prompt // Update the prompt in the history cache.
 
 	// Persist the updated history to the storage.

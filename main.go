@@ -42,6 +42,7 @@ func main() {
 		topP             = getEnvAsFloat32("TGPT_TOP_P", chatgpt.DefaultRequestParams.TopP)
 		presencePenalty  = getEnvAsFloat32("TGPT_PRESENCE_PENALTY", chatgpt.DefaultRequestParams.PresencePenalty)
 		frequencyPenalty = getEnvAsFloat32("TGPT_FREQUENCY_PENALTY", chatgpt.DefaultRequestParams.FrequencyPenalty)
+		prompt           = getEnv("TGPT_PROMPT", "")
 	)
 
 	fmt.Printf("Bot '%s' is starting...\n", name)
@@ -83,6 +84,7 @@ func main() {
 		adminContact,
 		currency,
 		rate,
+		prompt,
 	)
 
 	// Setup a channel to listen for interrupt signal (Ctrl+C) and SIGTERM.

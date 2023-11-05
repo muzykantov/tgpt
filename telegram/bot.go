@@ -57,6 +57,9 @@ type Bot struct {
 	// rate defines the exchange or conversion rate associated with the
 	// currency specified, which may be used in financial calculations.
 	rate float64
+
+	// prompt for new sessions.
+	prompt string
 }
 
 // NewBot creates and initializes a new instance of Bot with the necessary dependencies.
@@ -75,7 +78,8 @@ type Bot struct {
 //   - adminContact: Contact information for the bot administrator.
 //   - currency: A string representing the currency code (e.g., "$", "￥") used for statistics reporting.
 //   - rate: A float64 value representing the exchange rate or a conversion factor used for financial statistics.
-
+//   - prompt: Bot's default prompt.
+//
 // Returns:
 //   - A pointer to the newly created Bot instance.
 func NewBot(
@@ -88,6 +92,7 @@ func NewBot(
 	adminContact string,
 	currency string,
 	rate float64,
+	prompt string,
 ) *Bot {
 	bot := &Bot{
 		name:         name,
@@ -100,6 +105,7 @@ func NewBot(
 		adminContact: adminContact,
 		currency:     currency,
 		rate:         rate,
+		prompt:       prompt,
 	}
 
 	// Populate the allowedUsers map
@@ -457,6 +463,20 @@ func (b *Bot) handleRegularMessage(ctx context.Context, msg *tgbotapi.Message) {
 			slog.String("error", err.Error()),
 		)
 		return
+	}
+
+	if b.prompt != "" {
+		if err := session.SetPrompt(ctx, b.prompt); err != nil {
+			b.Reply(msg, b.printer.Sprintf(lang.MsgUnexpectedError, b.adminContact, err.Error()))
+			slog.Error(
+				"handleRegularMessage SetPrompt error",
+				slog.Int64("chatID", msg.Chat.ID),
+				slog.Int("messageID", msg.MessageID),
+				slog.String("messageText", msg.Text),
+				slog.String("error", err.Error()),
+			)
+			return
+		}
 	}
 
 	typingCtx, cancel := context.WithCancel(ctx)
