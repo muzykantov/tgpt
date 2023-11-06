@@ -167,16 +167,37 @@ func (b *Bot) Reply(to *tgbotapi.Message, with string) {
 	msg.ReplyToMessageID = to.MessageID
 	msg.ParseMode = "markdown"
 
+	var err error
+
 	// Using the Send method of the sender to dispatch the message.
-	_, err := b.sender.Send(msg)
-	if err != nil {
-		slog.Error(
-			"reply error",
-			slog.Int64("chatID", to.Chat.ID),
-			slog.Int("messageID", to.MessageID),
-			slog.String("error", err.Error()),
-		)
+	if _, err = b.sender.Send(msg); err == nil {
+		return
 	}
+
+	slog.Error(
+		"reply error. trying to use plain text.",
+		slog.Int64("chatID", to.Chat.ID),
+		slog.Int("messageID", to.MessageID),
+		slog.String("error", err.Error()),
+	)
+
+	msg.ParseMode = ""
+
+	// Using the Send method of the sender to dispatch the message.
+	if _, err = b.sender.Send(msg); err == nil {
+		return
+	}
+
+	slog.Error(
+		"reply plain text error.",
+		slog.Int64("chatID", to.Chat.ID),
+		slog.Int("messageID", to.MessageID),
+		slog.String("error", err.Error()),
+	)
+
+	b.sender.Send(
+		tgbotapi.NewMessage(to.Chat.ID, b.printer.Sprintf(lang.MsgUnexpectedError, b.adminContact, err.Error())),
+	)
 }
 
 // Send dispatches a non-reply message to a specified chat in Telegram.
@@ -195,15 +216,35 @@ func (b *Bot) Send(chat int64, message string) {
 	msg := tgbotapi.NewMessage(chat, message)
 	msg.ParseMode = "markdown"
 
+	var err error
+
 	// Using the Send method of the sender to dispatch the message.
-	_, err := b.sender.Send(msg)
-	if err != nil {
-		slog.Error(
-			"send error",
-			slog.Int64("chatID", chat),
-			slog.String("error", err.Error()),
-		)
+	if _, err = b.sender.Send(msg); err == nil {
+		return
 	}
+
+	slog.Error(
+		"send error. trying to use plain text.",
+		slog.Int64("chatID", chat),
+		slog.String("error", err.Error()),
+	)
+
+	msg.ParseMode = ""
+
+	// Using the Send method of the sender to dispatch the message.
+	if _, err = b.sender.Send(msg); err == nil {
+		return
+	}
+
+	slog.Error(
+		"send plain text error.",
+		slog.Int64("chatID", chat),
+		slog.String("error", err.Error()),
+	)
+
+	b.sender.Send(
+		tgbotapi.NewMessage(chat, b.printer.Sprintf(lang.MsgUnexpectedError, b.adminContact, err.Error())),
+	)
 }
 
 // Typing simulates typing activity in a chat until the provided context is cancelled.
