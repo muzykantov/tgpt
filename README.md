@@ -5,10 +5,45 @@ TGPT is a minimalist, yet powerful GPT Telegram bot built in Go with a pure focu
 ## Main Features
 - Fast and Efficient: Designed and built to work swiftly, ensuring optimal user experience.
 - Minimal Requirements: Runs smoothly even on low-end hardware. No database or additional dependencies required.
-- Accurate Cost Calculation: Precisely calculates cost, ensuring correct estimates.
-- Versions Supported: Fully supports the GPT-3.5 Turbo and future-proof with GPT-4 support. Different context length can be handled.
+- Accurate Cost Calculation: Precisely calculates cost, ensuring correct estimates. The bot meticulously tracks expenses for each user, providing a transparent view of usage costs.
+- Multi-Currency Support: Offers the ability to display and recalculate costs in various currencies, catering to a global user base and their financial preferences.
+- Versions Supported: Fully supports the GPT-3.5 Turbo and future-proof with GPT-4 support. Different context lengths can be handled, including the expanded context length for GPT-4 Turbo Preview (gpt-4-1106-preview) with up to 128k tokens.
 - Chat History: Allows to maintain chat history, enabling continuity in user interactions.
 - Light on Hardware: Among the unique advantages of TGPT is its low hardware requirements, making it easier to host and maintain than some other options.
+
+### Available AI Models and Their Cost Structures:
+
+1. GPT-3.5 Turbo (4k Context)
+   - Identifier: openai.GPT3Dot5Turbo
+   - Context Length: 4,000 tokens
+   - Cost Structure: Referenced by GPT3Dot5TurboCtx4k
+
+2. GPT-3.5 Turbo (16k Context)
+   - Identifier: openai.GPT3Dot5Turbo16K
+   - Context Length: 16,000 tokens
+   - Cost Structure: Referenced by GPT3Dot5TurboCtx16k
+
+3. GPT-4 (8k Context)
+   - Identifier: openai.GPT4
+   - Context Length: 8,000 tokens
+   - Cost Structure: Referenced by GPT4Ctx8k
+
+4. GPT-4 (32k Context)
+   - Identifier: openai.GPT432K
+   - Context Length: 32,000 tokens
+   - Cost Structure: Referenced by GPT4Ctx32k
+
+5. GPT-4 Turbo Preview (128k Context)
+   - Identifier: "gpt-4-1106-preview"
+   - Context Length: 128,000 tokens
+   - Cost Structure: Referenced by GPT4Turbo1106Ctx128k
+
+6. GPT-3.5 Turbo (16k Context, Special Version)
+   - Identifier: "gpt-3.5-turbo-1106"
+   - Context Length: 16,000 tokens
+   - Cost Structure: Referenced by GPT3Dot5Turbo1106Ctx16k
+
+This list represents the various configurations of the GPT-3.5 and GPT-4 models supported by TGPT, each with different context lengths to suit a variety of use cases. It is essential for users to choose the appropriate model based on their needs, considering factors such as the complexity of the task, the desired output length, and cost efficiency.
 
 ## Installation
 Clone the project into your Go directory.
@@ -25,9 +60,11 @@ To run the bot, simply start the executable.
 
 ## Configuration
 
-Before you can run the bot, you need to configure it by setting environment variables. These variables can either be set in your environment directly or by using a `.env` file in the root directory of the project.
+Before you can run the bot, you need to configure it by setting environment variables. These variables can either be set in your environment directly or by using a .env file in the root directory of the project.
 
 Below is a list of all the environment variables used by the bot, along with a description for each:
+
+⚠️ **Update**: TGPT has now integrated support for the GPT-4 Turbo Preview (gpt-4-1106-preview) which includes handling a context length of up to 128k tokens. This enhancement ensures that TGPT remains cutting-edge, providing users with the latest in AI language model capabilities. Alongside this significant update, the bot's accurate cost calculation feature has been meticulously updated to account for the changes associated with the new GPT-4 Turbo Preview usage, guaranteeing precise cost estimations.
 
 ### API Parameters (Required)
 

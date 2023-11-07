@@ -27,7 +27,7 @@ func main() {
 		openaiApiKey     = getEnv("TGPT_OPENAI_API_KEY", "")
 
 		name         = getEnv("TGPT_NAME", "TGPT")
-		model        = getEnv("MODEL", "gpt-4")
+		model        = getEnv("TGPT_MODEL", "gpt-4")
 		allowedUsers = getEnvAsSlice("TGPT_ALLOWED_USERS", []int64{}, ",")
 		adminUsers   = getEnvAsSlice("TGPT_ADMIN_USERS", []int64{}, ",")
 		language     = getEnv("TGPT_LANGUAGE", "us")
@@ -46,6 +46,26 @@ func main() {
 	)
 
 	fmt.Printf("Bot '%s' is starting...\n", name)
+
+	fmt.Println("Bot parameters:")
+	fmt.Printf("Telegram Bot Token: %s\n", telegramBotToken)
+	fmt.Printf("OpenAI API Key: %s\n", openaiApiKey)
+	fmt.Printf("Name: %s\n", name)
+	fmt.Printf("Model: %s\n", model)
+	fmt.Printf("Allowed Users: %v\n", allowedUsers)
+	fmt.Printf("Admin Users: %v\n", adminUsers)
+	fmt.Printf("Language: %s\n", language)
+	fmt.Printf("Admin Contact: %s\n", adminContact)
+	fmt.Printf("Currency: %s\n", currency)
+	fmt.Printf("Rate: %f\n", rate)
+	fmt.Printf("Cache TTL: %v\n", cacheTTL)
+	fmt.Printf("DB Directory: %s\n", dbDir)
+	fmt.Printf("Max Tokens: %d\n", maxTokens)
+	fmt.Printf("Temperature: %f\n", temperature)
+	fmt.Printf("Top P: %f\n", topP)
+	fmt.Printf("Presence Penalty: %f\n", presencePenalty)
+	fmt.Printf("Frequency Penalty: %f\n", frequencyPenalty)
+	fmt.Printf("Prompt: %s\n", prompt)
 
 	var (
 		tgClient     = must(tgbotapi.NewBotAPI(telegramBotToken))
